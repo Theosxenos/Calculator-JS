@@ -5,6 +5,7 @@ const operandbuttons = document.querySelectorAll(".operand");
 const operatorbuttons = document.querySelectorAll(".operator");
 const clearbutton = document.querySelector("#clearbutton");
 const deletebutton = document.querySelector("#deletebutton");
+const separatorbutton = document.querySelector(".separator");
 
 // Memory buttons
 const memoryclearbutton = document.querySelector("#memoryclear");
@@ -28,6 +29,7 @@ let operator = "";
 let previousoperator = "";
 let lastkey = "";
 let inputtednumbers = [];
+let makenumberfloat = false;
 
 let mathfunction = () => { };
 
@@ -35,7 +37,10 @@ let mathfunction = () => { };
 /// Event listeners
 ///
 
-clearbutton.addEventListener('click', () => clearDisplay());
+clearbutton.addEventListener('click', () => {
+    clearDisplay();
+    inputtednumbers = [];
+});
 
 deletebutton.addEventListener('click', (e) => {
     if (currentnumber == 0) {
@@ -44,6 +49,18 @@ deletebutton.addEventListener('click', (e) => {
 
     currentnumber = Number(String(currentnumber).slice(0, -1));
     updateDisplay();
+});
+
+separatorbutton.addEventListener('click', () => {
+    let curnumberasstring = String(currentnumber);
+
+    if(curnumberasstring.includes(',') || curnumberasstring.includes('.')) {
+        makenumberfloat = false;
+        return;
+    }
+
+    makenumberfloat = true;
+    maindisplay.textContent += ".";
 });
 
 operatorbuttons.forEach((button) => {
@@ -93,6 +110,16 @@ operandbuttons.forEach((button) => {
 
         if (keystoclearafter.includes(lastkey)) {
             clearDisplay();
+        }
+
+        if(makenumberfloat) {
+            let displayedtext = maindisplay.textContent;
+            let newnumber = parseFloat(`${displayedtext}${button.value}`);
+
+            currentnumber = newnumber;
+            updateDisplay();
+            
+            return;
         }
 
         updateDisplay(button.value);
