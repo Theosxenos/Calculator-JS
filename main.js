@@ -24,9 +24,10 @@ const subdisplay = document.querySelector("#subdisplay");
 ///
 let currentnumber = 0;
 let memorynumber = 0;
-let operator;
-let previousoperator;
+let operator = "";
+let previousoperator = "";
 let lastkey = "";
+let inputtednumbers = [];
 
 let mathfunction = () => { };
 
@@ -48,6 +49,45 @@ deletebutton.addEventListener('click', (e) => {
 operatorbuttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         operator = e.target.value;
+
+        if(inputtednumbers.length == 2)
+        {
+            inputtednumbers.shift();
+        }
+        inputtednumbers.push(currentnumber);
+
+        if(operator == "+") {
+            mathfunction = (a, b) => a + b;
+        }
+        else if (operator == "-") {
+            mathfunction = (a, b) => a - b;
+        }
+        else if (operator == "/") {
+            mathfunction = (a, b) => a / b;
+        }
+        else if (operator=="*") {
+            mathfunction = (a, b) => a * b;
+        }
+        else if (operator == "=") {
+            let result = mathfunction(inputtednumbers[0], inputtednumbers[1]);
+
+            currentnumber = result;
+            updateDisplay();
+        }
+        else if (operator == "chs") {
+            if (currentnumber == 0) 
+            {
+                return;
+            }
+        
+            // -1 * -1 = 1
+            // -1 * 1 = -1
+            currentnumber *= -1;    
+        
+            updateDisplay();
+        }
+
+
     });
 });
 
@@ -141,36 +181,5 @@ function updateDisplay(number) {
     }
 
     maindisplay.textContent = currentnumber;
-
-}
-
-function addNumbers(a, b) {
-    return a + b;
-}
-
-function subtractNumbers(a, b) {
-    return a - b;
-}
-
-function divideNumbers(a, b) {
-    return a / b;
-}
-
-function multiplyNumbers(a, b) {
-    return a * b;
-}
-
-function changeSign()
-{
-    if (currentnumber == 0) 
-    {
-        return;
-    }
-
-    // -1 * -1 = 1
-    // -1 * 1 = -1
-    currentnumber *= -1;    
-
-    updateDisplay();
 
 }
