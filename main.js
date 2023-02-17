@@ -101,6 +101,10 @@ operatorbuttons.forEach((button) => {
 
             updateDisplay();
         }
+        else if(operator =="%") {
+            currentnumber /= 100;
+            updateDisplay();
+        }
     });
 });
 
