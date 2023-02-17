@@ -65,12 +65,17 @@ separatorbutton.addEventListener('click', () => {
 
 operatorbuttons.forEach((button) => {
     button.addEventListener('click', (e) => {
+        previousoperator = operator;
         operator = e.target.value;
 
-        if (inputtednumbers.length == 2) {
-            inputtednumbers.shift();
+        if(previousoperator == "=" && operator == "=") {
+            inputtednumbers[0] = currentnumber;
+        } else {
+            if (inputtednumbers.length == 2) {
+                inputtednumbers.shift();
+            }
+            inputtednumbers.push(currentnumber);
         }
-        inputtednumbers.push(currentnumber);
 
         if (operator == "+") {
             mathfunction = (a, b) => a + b;
