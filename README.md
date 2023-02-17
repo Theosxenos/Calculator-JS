@@ -1,2 +1,2 @@
 # Calculator-JS
-My implementation of the Odin Project assignment to make a calculator.
+My implementation of the Odin Project [assignment](https://www.theodinproject.com/lessons/foundations-calculator) to make a calculator.
