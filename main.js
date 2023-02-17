@@ -126,6 +126,9 @@ operandbuttons.forEach((button) => {
             let newnumber = parseFloat(`${displayedtext}${button.value}`);
 
             currentnumber = newnumber;
+            
+            makenumberfloat = false;
+                        
             updateDisplay();
             
             return;
@@ -207,8 +210,14 @@ function clearDisplay() {
 
 function updateDisplay(number) {
     if (number != undefined) {
-        currentnumber = Number(`${currentnumber}${number}`);
+        let combinednumber = `${currentnumber}${number}`;
+        currentnumber = parseFloat(combinednumber);
+        console.log({combinednumber});
     }
 
     maindisplay.textContent = currentnumber;
+}
+
+function numberFromDisplay() {
+    
 }
