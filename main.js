@@ -41,7 +41,7 @@ deletebutton.addEventListener('click', (e) => {
     if (currentnumber == 0) {
         return;
     }
-    
+
     currentnumber = Number(String(currentnumber).slice(0, -1));
     updateDisplay();
 });
@@ -50,13 +50,12 @@ operatorbuttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         operator = e.target.value;
 
-        if(inputtednumbers.length == 2)
-        {
+        if (inputtednumbers.length == 2) {
             inputtednumbers.shift();
         }
         inputtednumbers.push(currentnumber);
 
-        if(operator == "+") {
+        if (operator == "+") {
             mathfunction = (a, b) => a + b;
         }
         else if (operator == "-") {
@@ -65,7 +64,7 @@ operatorbuttons.forEach((button) => {
         else if (operator == "/") {
             mathfunction = (a, b) => a / b;
         }
-        else if (operator=="*") {
+        else if (operator == "*") {
             mathfunction = (a, b) => a * b;
         }
         else if (operator == "=") {
@@ -75,19 +74,16 @@ operatorbuttons.forEach((button) => {
             updateDisplay();
         }
         else if (operator == "chs") {
-            if (currentnumber == 0) 
-            {
+            if (currentnumber == 0) {
                 return;
             }
-        
+
             // -1 * -1 = 1
             // -1 * 1 = -1
-            currentnumber *= -1;    
-        
+            currentnumber *= -1;
+
             updateDisplay();
         }
-
-
     });
 });
 
@@ -95,8 +91,7 @@ operandbuttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         let keystoclearafter = ["operator", "memorysubtract", "memoryadd"];
 
-        if(keystoclearafter.includes(lastkey))
-        {
+        if (keystoclearafter.includes(lastkey)) {
             clearDisplay();
         }
 
@@ -114,7 +109,7 @@ document.querySelectorAll("button").forEach((button) => {
             return;
         }
 
-        if(e.target.id === "")
+        if (e.target.id === "")
             lastkey = cl[0];
         else
             lastkey = e.target.id;
@@ -137,12 +132,12 @@ memoryclearbutton.addEventListener('click', (e) => {
 });
 
 memoryrecallbutton.addEventListener('click', (e) => {
-    
-    if(memoryrecallbutton.classList.contains("buttondisabled")) {
+
+    if (memoryrecallbutton.classList.contains("buttondisabled")) {
         console.log("button disabled");
         return;
     }
-    
+
     currentnumber = memorynumber;
     updateDisplay();
 });
@@ -167,7 +162,7 @@ memorysubtractbutton.addEventListener('click', (e) => {
 
 function clearDisplay() {
     maindisplay.textContent = "";
-    subdisplay.textContent = "";    
+    subdisplay.textContent = "";
 
     currentnumber = 0;
 
@@ -175,11 +170,9 @@ function clearDisplay() {
 }
 
 function updateDisplay(number) {
-    if (number != undefined)
-    {
+    if (number != undefined) {
         currentnumber = Number(`${currentnumber}${number}`);
     }
 
     maindisplay.textContent = currentnumber;
-
 }
