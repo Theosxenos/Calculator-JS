@@ -53,6 +53,13 @@ operatorbuttons.forEach((button) => {
 
 operandbuttons.forEach((button) => {
     button.addEventListener('click', (e) => {
+        let keystoclearafter = ["operator", "memorysubtract", "memoryadd"];
+
+        if(keystoclearafter.includes(lastkey))
+        {
+            clearDisplay();
+        }
+
         updateDisplay(button.value);
     });
 });
@@ -67,7 +74,10 @@ document.querySelectorAll("button").forEach((button) => {
             return;
         }
 
-        lastkey = cl[0];
+        if(e.target.id === "")
+            lastkey = cl[0];
+        else
+            lastkey = e.target.id;
     });
 });
 
