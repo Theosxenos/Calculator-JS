@@ -207,7 +207,7 @@ function clearDisplay() {
  */
 function updateDisplay(number) {
 
-    if(currentnumber() === "0") {
+    if(currentnumber() === "0" && number != ".") {
         maindisplay.textContent = number;
 
         return;
