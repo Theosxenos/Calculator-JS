@@ -153,6 +153,10 @@ document.querySelectorAll("button").forEach((button) => {
 window.addEventListener('keydown', function (e) {
     const button = document.querySelector(`button[value='${e.key}']`);
 
+    if(button == null) {
+        return;
+    }
+
     // Checks if it's a button used for the calculator
     // So that it doesn't prevent using the other not used keys (e.g. F11, etc.)
     if(button.classList.length >= 1)
@@ -160,9 +164,7 @@ window.addEventListener('keydown', function (e) {
         e.preventDefault();
     }
 
-    if (button != null) {
-        button.click();
-    }
+    button.click();
 });
 
 // Memory Buttons
