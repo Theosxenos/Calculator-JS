@@ -152,6 +152,14 @@ document.querySelectorAll("button").forEach((button) => {
 
 window.addEventListener('keydown', function (e) {
     const button = document.querySelector(`button[value='${e.key}']`);
+
+    // Checks if it's a button used for the calculator
+    // So that it doesn't prevent using the other not used keys (e.g. F11, etc.)
+    if(button.classList.length >= 1)
+    {
+        e.preventDefault();
+    }
+
     if (button != null) {
         button.click();
     }
