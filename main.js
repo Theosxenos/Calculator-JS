@@ -99,7 +99,7 @@ operatorbuttons.forEach((button) => {
         else if (operator == "=") {
             let result = operate(inputtednumbers[0], inputtednumbers[1]);
             
-            if(!result) {
+            if(result === undefined) {
                 return;
             }
 
