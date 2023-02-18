@@ -23,7 +23,6 @@ const subdisplay = document.querySelector("#subdisplay");
 ///
 /// Declarations
 ///
-let currentnumber = 0;
 let memorynumber = 0;
 let operator = "";
 let previousoperator = "";
@@ -33,34 +32,38 @@ let makenumberfloat = false;
 
 let mathfunction = () => { };
 
+const currentnumber = () => maindisplay.textContent;
+
 ///
 /// Event listeners
 ///
 
 clearbutton.addEventListener('click', () => {
-    clearDisplay();
+    // clearDisplay();
+    setDisplay(0);
     inputtednumbers = [];
+    mathfunction = () => {};
 });
 
 deletebutton.addEventListener('click', (e) => {
-    if (currentnumber == 0) {
+    if (currentnumber() === "0") {
         return;
     }
 
-    currentnumber = Number(String(currentnumber).slice(0, -1));
-    updateDisplay();
+    let todisplay = currentnumber().slice(0, -1);
+
+    setDisplay(todisplay);
 });
 
 separatorbutton.addEventListener('click', () => {
-    let curnumberasstring = String(currentnumber);
-
-    if(curnumberasstring.includes(',') || curnumberasstring.includes('.')) {
+    if(currentnumber().includes(',') || currentnumber().includes('.')) {
         makenumberfloat = false;
         return;
     }
 
     makenumberfloat = true;
-    maindisplay.textContent += ".";
+
+    updateDisplay(".");
 });
 
 operatorbuttons.forEach((button) => {
@@ -69,12 +72,12 @@ operatorbuttons.forEach((button) => {
         operator = e.target.value;
 
         if(previousoperator == "=" && operator == "=") {
-            inputtednumbers[0] = currentnumber;
+            inputtednumbers[0] = Number(currentnumber());
         } else {
             if (inputtednumbers.length == 2) {
                 inputtednumbers.shift();
             }
-            inputtednumbers.push(currentnumber);
+            inputtednumbers.push(Number(currentnumber()));
         }
 
         if (operator == "+") {
@@ -91,24 +94,26 @@ operatorbuttons.forEach((button) => {
         }
         else if (operator == "=") {
             let result = mathfunction(inputtednumbers[0], inputtednumbers[1]);
+            
+            if(!result) {
+                return;
+            }
 
-            currentnumber = result;
-            updateDisplay();
+            setDisplay(result);
         }
         else if (operator == "chs") {
-            if (currentnumber == 0) {
+            if (currentnumber() == "0") {
                 return;
             }
 
             // -1 * -1 = 1
             // -1 * 1 = -1
-            currentnumber *= -1;
+            let changednumber = -1 * Number(currentnumber());
 
-            updateDisplay();
+            setDisplay(changednumber);
         }
         else if(operator =="%") {
-            currentnumber /= 100;
-            updateDisplay();
+            setDisplay(Number(currentnumber()) / 100)
         }
     });
 });
@@ -121,25 +126,11 @@ operandbuttons.forEach((button) => {
             clearDisplay();
         }
 
-        if(makenumberfloat) {
-            let displayedtext = maindisplay.textContent;
-            let newnumber = parseFloat(`${displayedtext}${button.value}`);
-
-            currentnumber = newnumber;
-            
-            makenumberfloat = false;
-                        
-            updateDisplay();
-            
-            return;
-        }
-
         updateDisplay(button.value);
     });
 });
 
 // Each time a button is pressed save its primary class
-// Probably more future proof to check for a couple of pre-defined classes
 document.querySelectorAll("button").forEach((button) => {
     button.addEventListener('click', (e) => {
         const cl = e.target.classList;
@@ -177,19 +168,18 @@ memoryrecallbutton.addEventListener('click', (e) => {
         return;
     }
 
-    currentnumber = memorynumber;
-    updateDisplay();
+    setDisplay(memorynumber);
 });
 
 memoryaddbutton.addEventListener('click', (e) => {
-    memorynumber += currentnumber;
+    memorynumber += Number(currentnumber());
 
     memoryclearbutton.classList.remove("buttondisabled");
     memoryrecallbutton.classList.remove("buttondisabled");
 });
 
 memorysubtractbutton.addEventListener('click', (e) => {
-    memorynumber -= currentnumber;
+    memorynumber -= Number(currentnumber());
 
     memoryclearbutton.classList.remove("buttondisabled");
     memoryrecallbutton.classList.remove("buttondisabled");
@@ -203,21 +193,30 @@ function clearDisplay() {
     maindisplay.textContent = "";
     subdisplay.textContent = "";
 
-    currentnumber = 0;
-
-    updateDisplay();
+    updateDisplay(0);
 }
 
+/**
+ * Appends to the existing value on the display.
+ * @param {*} number A number or string to append to the displayed value
+ * @returns 
+ */
 function updateDisplay(number) {
-    if (number != undefined) {
-        let combinednumber = `${currentnumber}${number}`;
-        currentnumber = parseFloat(combinednumber);
-        console.log({combinednumber});
+
+    if(currentnumber() === "0") {
+        maindisplay.textContent = number;
+
+        return;
     }
 
-    maindisplay.textContent = currentnumber;
+    maindisplay.textContent = `${currentnumber()}${number}`;
 }
 
-function numberFromDisplay() {
-    
+/**
+ * Clears display then calls updateDisplay with the passed param
+ * @param {*} number A number or string to show on the display
+ */
+function setDisplay(number) {
+    clearDisplay();
+    updateDisplay(number);
 }
