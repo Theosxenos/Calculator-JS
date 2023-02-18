@@ -30,7 +30,7 @@ let lastkey = "";
 let inputtednumbers = [];
 let makenumberfloat = false;
 
-let mathfunction = () => { };
+let operate = () => { };
 
 const currentnumber = () => maindisplay.textContent;
 
@@ -42,7 +42,7 @@ clearbutton.addEventListener('click', () => {
     // clearDisplay();
     setDisplay(0);
     inputtednumbers = [];
-    mathfunction = () => {};
+    operate = () => {};
 });
 
 deletebutton.addEventListener('click', (e) => {
@@ -81,19 +81,19 @@ operatorbuttons.forEach((button) => {
         }
 
         if (operator == "+") {
-            mathfunction = (a, b) => a + b;
+            operate = (a, b) => a + b;
         }
         else if (operator == "-") {
-            mathfunction = (a, b) => a - b;
+            operate = (a, b) => a - b;
         }
         else if (operator == "/") {
-            mathfunction = (a, b) => a / b;
+            operate = (a, b) => a / b;
         }
         else if (operator == "*") {
-            mathfunction = (a, b) => a * b;
+            operate = (a, b) => a * b;
         }
         else if (operator == "=") {
-            let result = mathfunction(inputtednumbers[0], inputtednumbers[1]);
+            let result = operate(inputtednumbers[0], inputtednumbers[1]);
             
             if(!result) {
                 return;
