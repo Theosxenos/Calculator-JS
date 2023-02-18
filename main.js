@@ -103,7 +103,7 @@ operatorbuttons.forEach((button) => {
                 return;
             }
 
-            setDisplay(result);
+            setDisplay(parseFloat(result.toFixed(10)));
         }
         else if (operator == "chs") {
             if (currentnumber() == "0") {
