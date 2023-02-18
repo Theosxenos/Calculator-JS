@@ -39,9 +39,12 @@ const currentnumber = () => maindisplay.textContent;
 ///
 
 clearbutton.addEventListener('click', () => {
-    setDisplay(0);
     inputtednumbers = [];
     operate = () => {};
+    previousoperator = "";
+    operator = "";
+    
+    setDisplay(0);
 });
 
 deletebutton.addEventListener('click', (e) => {
@@ -74,13 +77,25 @@ operatorbuttons.forEach((button) => {
         previousoperator = operator;
         operator = e.target.value;
 
+        // If '=' is pressed multiple times repeats the previous operation
         if(previousoperator == "=" && operator == "=") {
             inputtednumbers[0] = Number(currentnumber());
-        } else {
+        } 
+        // Any other operator is pressed
+        else {
             if (inputtednumbers.length == 2) {
                 inputtednumbers.shift();
             }
             inputtednumbers.push(Number(currentnumber()));
+
+            // If the previous operator was `=` or empty string, then it should proceed as normal
+            // However if the previous operator was another operator (!="=") then it should act as if `=` was pressed
+            if (operator != "=" && (previousoperator != "=" && previousoperator != "")) {
+                runOperate();
+
+                inputtednumbers = [];
+                inputtednumbers.push(currentnumber())
+            }
         }
 
         if (operator == "+") {
@@ -96,13 +111,7 @@ operatorbuttons.forEach((button) => {
             operate = (a, b) => a * b;
         }
         else if (operator == "=") {
-            let result = operate(inputtednumbers[0], inputtednumbers[1]);
-            
-            if(result === undefined) {
-                return;
-            }
-
-            setDisplay(parseFloat(result.toFixed(10)));
+            runOperate();
         }
         else if (operator == "chs") {
             if (currentnumber() == "0") {
@@ -232,4 +241,14 @@ function updateDisplay(number) {
 function setDisplay(number) {
     clearDisplay();
     updateDisplay(number);
+}
+
+function runOperate() {
+    let result = operate(inputtednumbers[0], inputtednumbers[1]);
+            
+    if(result === undefined) {
+        return;
+    }
+
+    setDisplay(parseFloat(result.toFixed(10)));
 }
