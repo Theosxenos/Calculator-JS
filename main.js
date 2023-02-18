@@ -165,6 +165,10 @@ window.addEventListener('keydown', function (e) {
         return;
     }
 
+    if(e.shiftKey || e.altKey || e.ctrlKey) {
+        return;
+    }
+
     // Checks if it's a button used for the calculator
     // So that it doesn't prevent using the other not used keys (e.g. F11, etc.)
     if(button.classList.length >= 1)
