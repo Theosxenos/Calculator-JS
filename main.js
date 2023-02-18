@@ -39,7 +39,6 @@ const currentnumber = () => maindisplay.textContent;
 ///
 
 clearbutton.addEventListener('click', () => {
-    // clearDisplay();
     setDisplay(0);
     inputtednumbers = [];
     operate = () => {};
