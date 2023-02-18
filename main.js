@@ -51,6 +51,10 @@ deletebutton.addEventListener('click', (e) => {
     }
 
     let todisplay = currentnumber().slice(0, -1);
+    
+    if (todisplay.length == 0 || todisplay == "-") {
+        todisplay = "0";
+    }
 
     setDisplay(todisplay);
 });
