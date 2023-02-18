@@ -27,7 +27,7 @@ let memorynumber = 0;
 let operator = "";
 let previousoperator = "";
 let lastkey = "";
-let inputtednumbers = [];
+let numberhistory = [];
 let makenumberfloat = false;
 
 let operate = () => { };
@@ -39,7 +39,7 @@ const currentnumber = () => maindisplay.textContent;
 ///
 
 clearbutton.addEventListener('click', () => {
-    inputtednumbers = [];
+    numberhistory = [];
     operate = () => {};
     previousoperator = "";
     operator = "";
@@ -79,22 +79,22 @@ operatorbuttons.forEach((button) => {
 
         // If '=' is pressed multiple times repeats the previous operation
         if(previousoperator == "=" && operator == "=") {
-            inputtednumbers[0] = Number(currentnumber());
+            numberhistory[0] = Number(currentnumber());
         } 
         // Any other operator is pressed
         else {
-            if (inputtednumbers.length == 2) {
-                inputtednumbers.shift();
+            if (numberhistory.length == 2) {
+                numberhistory.shift();
             }
-            inputtednumbers.push(Number(currentnumber()));
+            numberhistory.push(Number(currentnumber()));
 
             // If the previous operator was `=` or empty string, then it should proceed as normal
             // However if the previous operator was another operator (!="=") then it should act as if `=` was pressed
             if (operator != "=" && (previousoperator != "=" && previousoperator != "")) {
                 runOperate();
 
-                inputtednumbers = [];
-                inputtednumbers.push(currentnumber())
+                numberhistory = [];
+                numberhistory.push(currentnumber())
             }
         }
 
@@ -244,7 +244,7 @@ function setDisplay(number) {
 }
 
 function runOperate() {
-    let result = operate(inputtednumbers[0], inputtednumbers[1]);
+    let result = operate(numberhistory[0], numberhistory[1]);
             
     if(result === undefined) {
         return;
