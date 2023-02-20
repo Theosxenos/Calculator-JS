@@ -29,6 +29,7 @@ let previousoperator = "";
 let lastkey = "";
 let numberhistory = [];
 let makenumberfloat = false;
+let displaylimit = 15;
 
 let operate = () => { };
 
@@ -136,6 +137,10 @@ operandbuttons.forEach((button) => {
 
         if (keystoclearafter.includes(lastkey)) {
             clearDisplay();
+        }
+
+        if(currentnumber().length == displaylimit) {
+            return;
         }
 
         updateDisplay(button.value);
@@ -254,5 +259,18 @@ function runOperate() {
         return;
     }
 
-    setDisplay(parseFloat(result.toFixed(10)));
+    let fixedpositionamount = 10;
+    let resultasstr = result.toString();
+
+    if(resultasstr.length > displaylimit) {
+        if(!Number.isInteger(result)) {
+
+            let dotindex = resultasstr.indexOf('.');
+            let newfixedposamnt = fixedpositionamount - (dotindex + 1);
+
+            fixedpositionamount = newfixedposamnt < 0 ? 0 : newfixedposamnt;
+        }
+    }
+
+    setDisplay(parseFloat(result.toFixed(fixedpositionamount)));
 }
