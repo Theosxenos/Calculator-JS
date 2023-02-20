@@ -36,10 +36,10 @@
     height: 20px;
 }
 
-#operand0
+/* #operand0
 {
-    /*grid-column: span 2;*/
-}
+    grid-column: span 2;
+} */
 
 .operator, .operand, .memorybutton, .clearbutton, .separator
 {
