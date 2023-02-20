@@ -42,10 +42,10 @@ const currentnumber = () => maindisplay.textContent;
 
 clearbutton.addEventListener('click', () => {
     numberhistory = [];
-    operate = () => {};
+    operate = () => { };
     previousoperator = "";
     operator = "";
-    
+
     setDisplay(0);
 });
 
@@ -55,7 +55,7 @@ deletebutton.addEventListener('click', (e) => {
     }
 
     let todisplay = currentnumber().slice(0, -1);
-    
+
     if (todisplay.length == 0 || todisplay == "-") {
         todisplay = "0";
     }
@@ -64,7 +64,7 @@ deletebutton.addEventListener('click', (e) => {
 });
 
 separatorbutton.addEventListener('click', () => {
-    if(currentnumber().includes(',') || currentnumber().includes('.')) {
+    if (currentnumber().includes(',') || currentnumber().includes('.')) {
         makenumberfloat = false;
         return;
     }
@@ -92,9 +92,9 @@ operatorbuttons.forEach((button) => {
         operator = e.target.value;
 
         // If '=' is pressed multiple times repeats the previous operation
-        if(previousoperator == "=" && operator == "=") {
+        if (previousoperator == "=" && operator == "=") {
             numberhistory[0] = Number(currentnumber());
-        } 
+        }
         // Any other operator is pressed
         else {
             if (numberhistory.length == 2) {
@@ -127,7 +127,7 @@ operatorbuttons.forEach((button) => {
         else if (operator == "=") {
             runOperate();
         }
-        else if(operator =="%") {
+        else if (operator == "%") {
             setDisplay(Number(currentnumber()) / 100)
         }
     });
@@ -142,7 +142,7 @@ operandbuttons.forEach((button) => {
             clearDisplay();
         }
 
-        if(currentnumber().length == displaylimit) {
+        if (currentnumber().length == displaylimit) {
             return;
         }
 
@@ -169,18 +169,17 @@ document.querySelectorAll("button").forEach((button) => {
 window.addEventListener('keydown', function (e) {
     const button = document.querySelector(`button[value='${e.key}']`);
 
-    if(button == null) {
+    if (button == null) {
         return;
     }
 
-    if(e.shiftKey || e.altKey || e.ctrlKey) {
+    if (e.shiftKey || e.altKey || e.ctrlKey) {
         return;
     }
 
     // Checks if it's a button used for the calculator
     // So that it doesn't prevent using the other not used keys (e.g. F11, etc.)
-    if(button.classList.length >= 1)
-    {
+    if (button.classList.length >= 1) {
         e.preventDefault();
     }
 
@@ -237,7 +236,7 @@ function clearDisplay() {
  */
 function updateDisplay(number) {
 
-    if(currentnumber() === "0" && number != ".") {
+    if (currentnumber() === "0" && number != ".") {
         maindisplay.textContent = number;
 
         return;
@@ -257,16 +256,16 @@ function setDisplay(number) {
 
 function runOperate() {
     let result = operate(numberhistory[0], numberhistory[1]);
-            
-    if(result === undefined) {
+
+    if (result === undefined) {
         return;
     }
 
     let fixedpositionamount = 10;
     let resultasstr = result.toString();
 
-    if(resultasstr.length > displaylimit) {
-        if(!Number.isInteger(result)) {
+    if (resultasstr.length > displaylimit) {
+        if (!Number.isInteger(result)) {
 
             let dotindex = resultasstr.indexOf('.');
             let newfixedposamnt = fixedpositionamount - (dotindex + 1);
