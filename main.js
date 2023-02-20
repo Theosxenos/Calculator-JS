@@ -6,6 +6,7 @@ const operatorbuttons = document.querySelectorAll(".operator");
 const clearbutton = document.querySelector("#clearbutton");
 const deletebutton = document.querySelector("#deletebutton");
 const separatorbutton = document.querySelector(".separator");
+const changesignbutton = document.querySelector(".changesign");
 
 // Memory buttons
 const memoryclearbutton = document.querySelector("#memoryclear");
@@ -73,6 +74,18 @@ separatorbutton.addEventListener('click', () => {
     updateDisplay(".");
 });
 
+changesignbutton.addEventListener('click', () => {
+    if (currentnumber() == "0") {
+        return;
+    }
+
+    // -1 * -1 = 1
+    // -1 * 1 = -1
+    let changednumber = -1 * Number(currentnumber());
+
+    setDisplay(changednumber);
+});
+
 operatorbuttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         previousoperator = operator;
@@ -113,17 +126,6 @@ operatorbuttons.forEach((button) => {
         }
         else if (operator == "=") {
             runOperate();
-        }
-        else if (operator == "chs") {
-            if (currentnumber() == "0") {
-                return;
-            }
-
-            // -1 * -1 = 1
-            // -1 * 1 = -1
-            let changednumber = -1 * Number(currentnumber());
-
-            setDisplay(changednumber);
         }
         else if(operator =="%") {
             setDisplay(Number(currentnumber()) / 100)
