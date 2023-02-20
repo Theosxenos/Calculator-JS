@@ -29,7 +29,6 @@ let operator = "";
 let previousoperator = "";
 let lastkey = "";
 let numberhistory = [];
-let makenumberfloat = false;
 let displaylimit = 15;
 
 let operate = () => { };
@@ -65,11 +64,12 @@ deletebutton.addEventListener('click', (e) => {
 
 separatorbutton.addEventListener('click', () => {
     if (currentnumber().includes(',') || currentnumber().includes('.')) {
-        makenumberfloat = false;
-        return;
-    }
+        if(!lastkey == "operator") {
+            return;
+        }
 
-    makenumberfloat = true;
+        setDisplay(0);
+    }
 
     updateDisplay(".");
 });
