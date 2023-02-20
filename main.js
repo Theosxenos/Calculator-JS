@@ -131,6 +131,7 @@ operatorbuttons.forEach((button) => {
     });
 });
 
+// Clears the display after the user presses certain buttons
 operandbuttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         let keystoclearafter = ["operator", "memorysubtract", "memoryadd"];
