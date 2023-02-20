@@ -94,7 +94,7 @@ operatorbuttons.forEach((button) => {
                 runOperate();
 
                 numberhistory = [];
-                numberhistory.push(currentnumber())
+                numberhistory.push(Number(currentnumber()));
             }
         }
 
