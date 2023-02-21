@@ -30,10 +30,10 @@ let previousoperator = "";
 let lastkey = "";
 let numberhistory = [];
 let displaylimit = 15;
+let currentnumber = 0;
 
 let operate = () => { };
 
-const currentnumber = () => maindisplay.textContent;
 
 ///
 /// Event listeners
@@ -49,11 +49,11 @@ clearbutton.addEventListener('click', () => {
 });
 
 deletebutton.addEventListener('click', (e) => {
-    if (currentnumber() === "0") {
+    if (currentnumber === 0) {
         return;
     }
 
-    let todisplay = currentnumber().slice(0, -1);
+    let todisplay = currentnumber.toString().slice(0, -1);
 
     if (todisplay.length == 0 || todisplay == "-") {
         todisplay = "0";
@@ -63,7 +63,7 @@ deletebutton.addEventListener('click', (e) => {
 });
 
 separatorbutton.addEventListener('click', () => {
-    if (currentnumber().includes(',') || currentnumber().includes('.')) {
+    if (currentnumber.toString().includes(',') || currentnumber.toString().includes('.')) {
         if(!lastkey == "operator") {
             return;
         }
@@ -75,13 +75,13 @@ separatorbutton.addEventListener('click', () => {
 });
 
 changesignbutton.addEventListener('click', () => {
-    if (currentnumber() == "0") {
+    if (currentnumber == 0) {
         return;
     }
 
     // -1 * -1 = 1
     // -1 * 1 = -1
-    let changednumber = -1 * Number(currentnumber());
+    let changednumber = -1 * currentnumber;
 
     setDisplay(changednumber);
 });
@@ -93,14 +93,14 @@ operatorbuttons.forEach((button) => {
 
         // If '=' is pressed multiple times repeats the previous operation
         if (previousoperator == "=" && operator == "=") {
-            numberhistory[0] = Number(currentnumber());
+            numberhistory[0] = currentnumber;
         }
         // Any other operator is pressed
         else {
             if (numberhistory.length == 2) {
                 numberhistory.shift();
             }
-            numberhistory.push(Number(currentnumber()));
+            numberhistory.push(currentnumber);
 
             // If the previous operator was `=` or empty string, then it should proceed as normal
             // However if the previous operator was another operator (!="=") then it should act as if `=` was pressed
@@ -108,7 +108,7 @@ operatorbuttons.forEach((button) => {
                 runOperate();
 
                 numberhistory = [];
-                numberhistory.push(Number(currentnumber()));
+                numberhistory.push(currentnumber);
             }
         }
 
@@ -128,7 +128,8 @@ operatorbuttons.forEach((button) => {
             runOperate();
         }
         else if (operator == "%") {
-            setDisplay(Number(currentnumber()) / 100)
+            currentnumber /= 100;
+            setDisplay(currentnumber);
         }
     });
 });
@@ -142,7 +143,7 @@ operandbuttons.forEach((button) => {
             clearDisplay();
         }
 
-        if (currentnumber().length == displaylimit) {
+        if (currentnumber.toString().length == displaylimit) {
             return;
         }
 
@@ -205,14 +206,14 @@ memoryrecallbutton.addEventListener('click', (e) => {
 });
 
 memoryaddbutton.addEventListener('click', (e) => {
-    memorynumber += Number(currentnumber());
+    memorynumber += currentnumber;
 
     memoryclearbutton.classList.remove("buttondisabled");
     memoryrecallbutton.classList.remove("buttondisabled");
 });
 
 memorysubtractbutton.addEventListener('click', (e) => {
-    memorynumber -= Number(currentnumber());
+    memorynumber -= currentnumber;
 
     memoryclearbutton.classList.remove("buttondisabled");
     memoryrecallbutton.classList.remove("buttondisabled");
@@ -236,13 +237,13 @@ function clearDisplay() {
  */
 function updateDisplay(number) {
 
-    if (currentnumber() === "0" && number != ".") {
+    if (currentnumber === 0 && number != ".") {
         maindisplay.textContent = number;
 
         return;
     }
 
-    maindisplay.textContent = `${currentnumber()}${number}`;
+    maindisplay.textContent = `${currentnumber}${number}`;
 }
 
 /**
