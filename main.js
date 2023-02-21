@@ -44,8 +44,9 @@ clearbutton.addEventListener('click', () => {
     operate = () => { };
     previousoperator = "";
     operator = "";
-
-    setDisplay(0);
+    
+    setCurrentNumber(0);
+    clearDisplay();
 });
 
 deletebutton.addEventListener('click', (e) => {
@@ -59,7 +60,8 @@ deletebutton.addEventListener('click', (e) => {
         todisplay = "0";
     }
 
-    setDisplay(todisplay);
+    setCurrentNumber(todisplay);
+    setDisplay();
 });
 
 separatorbutton.addEventListener('click', () => {
@@ -68,7 +70,8 @@ separatorbutton.addEventListener('click', () => {
             return;
         }
 
-        setDisplay(0);
+        setCurrentNumber(0);
+        clearDisplay();
     }
 
     updateDisplay(".");
@@ -81,9 +84,8 @@ changesignbutton.addEventListener('click', () => {
 
     // -1 * -1 = 1
     // -1 * 1 = -1
-    let changednumber = -1 * currentnumber;
-
-    setDisplay(changednumber);
+    setCurrentNumber(currentnumber * -1);
+    updateDisplay();
 });
 
 operatorbuttons.forEach((button) => {
@@ -128,8 +130,8 @@ operatorbuttons.forEach((button) => {
             runOperate();
         }
         else if (operator == "%") {
-            currentnumber /= 100;
-            setDisplay(currentnumber);
+            setCurrentNumber(currentnumber / 100);
+            updateDisplay();
         }
     });
 });
@@ -140,14 +142,16 @@ operandbuttons.forEach((button) => {
         let keystoclearafter = ["operator", "memorysubtract", "memoryadd"];
 
         if (keystoclearafter.includes(lastkey)) {
-            clearDisplay();
+            setCurrentNumber(0);
+            updateDisplay();
         }
 
         if (currentnumber.toString().length == displaylimit) {
             return;
         }
 
-        updateDisplay(button.value);
+        setCurrentNumber(button.value, true);
+        updateDisplay();
     });
 });
 
@@ -202,7 +206,8 @@ memoryrecallbutton.addEventListener('click', (e) => {
         return;
     }
 
-    setDisplay(memorynumber);
+    setCurrentNumber(memorynumber);
+    updateDisplay();
 });
 
 memoryaddbutton.addEventListener('click', (e) => {
@@ -227,32 +232,32 @@ function clearDisplay() {
     maindisplay.textContent = "";
     subdisplay.textContent = "";
 
-    updateDisplay(0);
+    updateDisplay();
 }
 
 /**
  * Appends to the existing value on the display.
- * @param {*} number A number or string to append to the displayed value
+ * @param {*} value A number or string to append to the displayed value
  * @returns 
  */
-function updateDisplay(number) {
+function updateDisplay(value = '') {
 
-    if (currentnumber === 0 && number != ".") {
-        maindisplay.textContent = number;
+    if (value == "." || value == ",") {
+        maindisplay.textContent = `${currentnumber}${value}`;
 
         return;
     }
 
-    maindisplay.textContent = `${currentnumber}${number}`;
+    maindisplay.textContent = roundNumber(currentnumber);
 }
 
 /**
  * Clears display then calls updateDisplay with the passed param
- * @param {*} number A number or string to show on the display
+ * @param {number|string} [value] A number or string to show on the display
  */
-function setDisplay(number) {
+function setDisplay(value) {
     clearDisplay();
-    updateDisplay(number);
+    updateDisplay(value);
 }
 
 function runOperate() {
@@ -262,18 +267,39 @@ function runOperate() {
         return;
     }
 
+    currentnumber = result;
+    setDisplay(roundNumber(result));
+}
+
+function roundNumber(number = 0) {
     let fixedpositionamount = 10;
-    let resultasstr = result.toString();
+    let numberasstr = number.toString();
 
-    if (resultasstr.length > displaylimit) {
-        if (!Number.isInteger(result)) {
+    if (numberasstr.length > displaylimit) {
+        if (!Number.isInteger(number)) {
 
-            let dotindex = resultasstr.indexOf('.');
+            let dotindex = numberasstr.indexOf('.');
             let newfixedposamnt = fixedpositionamount - (dotindex + 1);
 
             fixedpositionamount = newfixedposamnt < 0 ? 0 : newfixedposamnt;
         }
     }
 
-    setDisplay(parseFloat(result.toFixed(fixedpositionamount)));
+    return parseFloat(number.toFixed(fixedpositionamount));
+}
+
+/**
+ * 
+ * @param {number|string} value The value to change the currentnumber with
+ * @param {boolean} combine If true combine the value with the currentnumber, if false set the currentnumber to the value
+ * @returns 
+ */
+function setCurrentNumber(value, combine = false) {
+    if (!combine) {
+        currentnumber = Number(value);
+
+        return;
+    }
+
+    currentnumber = Number(`${currentnumber}${value}`);
 }
