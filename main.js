@@ -30,7 +30,7 @@ let previousoperator = "";
 let lastkey = "";
 let numberhistory = [];
 let displaylimit = 15;
-let currentnumber = 0;
+let currentnumber = "";
 
 let operate = () => { };
 
@@ -45,36 +45,32 @@ clearbutton.addEventListener('click', () => {
     previousoperator = "";
     operator = "";
     
-    setCurrentNumber(0);
+    setCurrentNumber("0");
     clearDisplay();
 });
 
 deletebutton.addEventListener('click', (e) => {
-    if (currentnumber === 0) {
+    if (currentnumber === "0") {
         return;
     }
 
-    let todisplay = currentnumber.toString().slice(0, -1);
+    let todisplay = currentnumber.slice(0, -1);
 
     if (todisplay.length == 0 || todisplay == "-") {
         todisplay = "0";
     }
 
     setCurrentNumber(todisplay);
-    setDisplay();
+    updateDisplay();
 });
 
 separatorbutton.addEventListener('click', () => {
-    if (currentnumber.toString().includes(',') || currentnumber.toString().includes('.')) {
-        if(!lastkey == "operator") {
-            return;
-        }
-
-        setCurrentNumber(0);
-        clearDisplay();
+    if(currentnumber.includes('.')) {
+        return;
     }
 
-    updateDisplay(".");
+    setCurrentNumber(".", true);
+    updateDisplay();
 });
 
 changesignbutton.addEventListener('click', () => {
@@ -84,8 +80,8 @@ changesignbutton.addEventListener('click', () => {
 
     // -1 * -1 = 1
     // -1 * 1 = -1
-    setCurrentNumber(currentnumber * -1);
-    updateDisplay();
+    setCurrentNumber(`${currentnumber * -1}`);
+    updateDisplay(roundNumber(currentnumber));
 });
 
 operatorbuttons.forEach((button) => {
@@ -95,23 +91,25 @@ operatorbuttons.forEach((button) => {
 
         // If '=' is pressed multiple times repeats the previous operation
         if (previousoperator == "=" && operator == "=") {
-            numberhistory[0] = currentnumber;
+            numberhistory[0] = Number(currentnumber);
         }
         // Any other operator is pressed
         else {
             if (numberhistory.length == 2) {
                 numberhistory.shift();
             }
-            numberhistory.push(currentnumber);
 
             // If the previous operator was `=` or empty string, then it should proceed as normal
             // However if the previous operator was another operator (!="=") then it should act as if `=` was pressed
             if (operator != "=" && (previousoperator != "=" && previousoperator != "")) {
-                runOperate();
+                if(numberhistory.length == 2) {
+                    runOperate();
 
-                numberhistory = [];
-                numberhistory.push(currentnumber);
+                    numberhistory = [];
+                }
             }
+
+            numberhistory.push(Number(currentnumber));
         }
 
         if (operator == "+") {
@@ -130,7 +128,7 @@ operatorbuttons.forEach((button) => {
             runOperate();
         }
         else if (operator == "%") {
-            setCurrentNumber(currentnumber / 100);
+            setCurrentNumber(`${Number(currentnumber) / 100}`);
             updateDisplay();
         }
     });
@@ -140,17 +138,18 @@ operatorbuttons.forEach((button) => {
 operandbuttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         let keystoclearafter = ["operator", "memorysubtract", "memoryadd"];
+        let value = button.value.toString();
 
         if (keystoclearafter.includes(lastkey)) {
-            setCurrentNumber(0);
+            setCurrentNumber("0");
             updateDisplay();
         }
 
-        if (currentnumber.toString().length == displaylimit) {
+        if (currentnumber.length == displaylimit) {
             return;
         }
 
-        setCurrentNumber(button.value, true);
+        setCurrentNumber(value, true);
         updateDisplay();
     });
 });
@@ -211,14 +210,14 @@ memoryrecallbutton.addEventListener('click', (e) => {
 });
 
 memoryaddbutton.addEventListener('click', (e) => {
-    memorynumber += currentnumber;
+    memorynumber += Number(currentnumber);
 
     memoryclearbutton.classList.remove("buttondisabled");
     memoryrecallbutton.classList.remove("buttondisabled");
 });
 
 memorysubtractbutton.addEventListener('click', (e) => {
-    memorynumber -= currentnumber;
+    memorynumber -= Number(currentnumber);
 
     memoryclearbutton.classList.remove("buttondisabled");
     memoryrecallbutton.classList.remove("buttondisabled");
@@ -235,29 +234,11 @@ function clearDisplay() {
     updateDisplay();
 }
 
-/**
- * Appends to the existing value on the display.
- * @param {*} value A number or string to append to the displayed value
- * @returns 
- */
-function updateDisplay(value = '') {
-
-    if (value == "." || value == ",") {
-        maindisplay.textContent = `${currentnumber}${value}`;
-
-        return;
+function updateDisplay(value) {
+    if(value === undefined) {
+        value = currentnumber;
     }
-
-    maindisplay.textContent = roundNumber(currentnumber);
-}
-
-/**
- * Clears display then calls updateDisplay with the passed param
- * @param {number|string} [value] A number or string to show on the display
- */
-function setDisplay(value) {
-    clearDisplay();
-    updateDisplay(value);
+    maindisplay.textContent = value;
 }
 
 function runOperate() {
@@ -267,39 +248,54 @@ function runOperate() {
         return;
     }
 
-    currentnumber = result;
-    setDisplay(roundNumber(result));
-}
-
-function roundNumber(number = 0) {
-    let fixedpositionamount = 10;
-    let numberasstr = number.toString();
-
-    if (numberasstr.length > displaylimit) {
-        if (!Number.isInteger(number)) {
-
-            let dotindex = numberasstr.indexOf('.');
-            let newfixedposamnt = fixedpositionamount - (dotindex + 1);
-
-            fixedpositionamount = newfixedposamnt < 0 ? 0 : newfixedposamnt;
-        }
-    }
-
-    return parseFloat(number.toFixed(fixedpositionamount));
+    currentnumber = result.toString();
+    updateDisplay(roundNumber(currentnumber));
 }
 
 /**
  * 
- * @param {number|string} value The value to change the currentnumber with
+ * @param {string} number 
+ * @returns 
+ */
+function roundNumber(number) {
+    let fixedpositionamount = 0;
+    // let numberasstr = number.toString();
+
+    if (number.length > displaylimit) {
+        if (!Number.isInteger(Number(number))) {
+
+            let dotindex = number.indexOf('.');
+            let newfixedposamnt = displaylimit - (dotindex + 1);
+
+            fixedpositionamount = newfixedposamnt < 0 ? 0 : newfixedposamnt;
+
+            return Number(Number(number).toFixed(fixedpositionamount));
+
+        }
+
+        let overlimit = number.length - displaylimit;
+        return number.slice(0,-overlimit);
+    }
+
+    return number;
+}
+
+/**
+ * 
+ * @param {string} value The value to change the currentnumber with
  * @param {boolean} combine If true combine the value with the currentnumber, if false set the currentnumber to the value
  * @returns 
  */
 function setCurrentNumber(value, combine = false) {
     if (!combine) {
-        currentnumber = Number(value);
+        currentnumber = value;
 
         return;
     }
 
-    currentnumber = Number(`${currentnumber}${value}`);
+    if(currentnumber == "0" && value != ".") {
+        currentnumber = "";
+    }
+
+    currentnumber = `${currentnumber}${value}`;
 }
