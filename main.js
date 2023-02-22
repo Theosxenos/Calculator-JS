@@ -99,17 +99,17 @@ operatorbuttons.forEach((button) => {
                 numberhistory.shift();
             }
 
+            numberhistory.push(Number(currentnumber));
+
             // If the previous operator was `=` or empty string, then it should proceed as normal
             // However if the previous operator was another operator (!="=") then it should act as if `=` was pressed
             if (operator != "=" && (previousoperator != "=" && previousoperator != "")) {
-                if(numberhistory.length == 2) {
-                    runOperate();
+                runOperate();
 
-                    numberhistory = [];
-                }
+                numberhistory = [];
+                numberhistory.push(Number(currentnumber));
             }
 
-            numberhistory.push(Number(currentnumber));
         }
 
         if (operator == "+") {
