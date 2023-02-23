@@ -3,43 +3,48 @@
     font-family: monospace;
 }
 
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 900px;
+}
+
 #calculator
 {
+    background-color: #F3F3F3;
     border: 1px solid black;
-    
+    border-radius: 5px;
     height: 600px;
     width: 400px;
-
-    margin: 0 auto;
-    
+    padding: 10px;
     display: grid;
     gap: 5px;
 }
 
 #display
 {
+    display: flex;
+    background-color: white;
     border: solid 3px black;
+    border-radius: 3px;
     grid-column: span 4;
-    /*height: 100px;*/
-    padding-top: 10px;
-    text-align: right;
 }
 
 #maindisplay
 {
     font-size: 40px;
-    height: 50px;
+    margin: auto 0;
+    margin-left: auto;
+    margin-right: 10px;
+    
 }
 
 #subdisplay
 {
+    display: none;
     height: 20px;
 }
-
-/* #operand0
-{
-    grid-column: span 2;
-} */
 
 button
 {
@@ -47,7 +52,12 @@ button
     font-weight: bold;
 }
 
-.buttondisabled
+.clearbutton
 {
-    color: gray;
+    color: darkred;
+}
+
+.operator
+{
+    color: darkgreen;
 }
