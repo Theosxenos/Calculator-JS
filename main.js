@@ -30,9 +30,20 @@ let previousoperator = "";
 let lastkey = "";
 let numberhistory = [];
 let displaylimit = 15;
-let currentnumber = "";
+let currentnumber = "0";
 
 let operate = () => { };
+
+
+///
+/// init
+///
+(() => {
+    memoryclearbutton.disabled = true;
+    memoryrecallbutton.disabled = true;
+
+    updateDisplay();
+})();
 
 
 ///
@@ -163,10 +174,12 @@ document.querySelectorAll("button").forEach((button) => {
             return;
         }
 
-        if (e.target.id === "")
+        if (e.target.id === "") {
             lastkey = cl[0];
-        else
+        }
+        else {
             lastkey = e.target.id;
+        }
     });
 });
 
@@ -194,17 +207,11 @@ window.addEventListener('keydown', function (e) {
 memoryclearbutton.addEventListener('click', (e) => {
     memorynumber = 0;
 
-    memoryclearbutton.classList.add("buttondisabled");
-    memoryrecallbutton.classList.add("buttondisabled");
+    memoryclearbutton.disabled = true;
+    memoryrecallbutton.disabled = true;
 });
 
 memoryrecallbutton.addEventListener('click', (e) => {
-
-    if (memoryrecallbutton.classList.contains("buttondisabled")) {
-        console.log("button disabled");
-        return;
-    }
-
     setCurrentNumber(memorynumber);
     updateDisplay();
 });
@@ -212,15 +219,15 @@ memoryrecallbutton.addEventListener('click', (e) => {
 memoryaddbutton.addEventListener('click', (e) => {
     memorynumber += Number(currentnumber);
 
-    memoryclearbutton.classList.remove("buttondisabled");
-    memoryrecallbutton.classList.remove("buttondisabled");
+    memoryclearbutton.disabled = false;
+    memoryrecallbutton.disabled = false;
 });
 
 memorysubtractbutton.addEventListener('click', (e) => {
     memorynumber -= Number(currentnumber);
 
-    memoryclearbutton.classList.remove("buttondisabled");
-    memoryrecallbutton.classList.remove("buttondisabled");
+    memoryclearbutton.disabled = false;
+    memoryrecallbutton.disabled = false;
 });
 
 ///
