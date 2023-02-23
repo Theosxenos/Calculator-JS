@@ -44,7 +44,7 @@ clearbutton.addEventListener('click', () => {
     operate = () => { };
     previousoperator = "";
     operator = "";
-    
+
     setCurrentNumber("0");
     clearDisplay();
 });
@@ -65,7 +65,7 @@ deletebutton.addEventListener('click', (e) => {
 });
 
 separatorbutton.addEventListener('click', () => {
-    if(currentnumber.includes('.')) {
+    if (currentnumber.includes('.')) {
         return;
     }
 
@@ -235,7 +235,7 @@ function clearDisplay() {
 }
 
 function updateDisplay(value) {
-    if(value === undefined) {
+    if (value === undefined) {
         value = currentnumber;
     }
     maindisplay.textContent = value;
@@ -274,7 +274,7 @@ function roundNumber(number) {
         }
 
         let overlimit = number.length - displaylimit;
-        return number.slice(0,-overlimit);
+        return number.slice(0, -overlimit);
     }
 
     return number;
@@ -293,7 +293,7 @@ function setCurrentNumber(value, combine = false) {
         return;
     }
 
-    if(currentnumber == "0" && value != ".") {
+    if (currentnumber == "0" && value != ".") {
         currentnumber = "";
     }
 
