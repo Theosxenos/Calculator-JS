@@ -10,6 +10,7 @@ body {
     align-items: center;
     background-color: #dfddd7;
     /* height: 900px; */
+    flex-direction: column;
 }
 
 #calculator
@@ -90,4 +91,10 @@ button:hover:not(:disabled) {
 
 .memorybutton, .clearbutton {
     background-color: mediumaquamarine;
+}
+
+.copyright {
+    font-size: 18px;
+    justify-self: end;
+    margin-top: 10px;
 }
