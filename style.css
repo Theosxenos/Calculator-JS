@@ -1,5 +1,6 @@
 *
 {
+    color: #ffc;
     font-family: monospace;
 }
 
@@ -7,12 +8,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 900px;
+    /* height: 900px; */
 }
 
 #calculator
 {
-    background-color: #F3F3F3;
+    /* background-color: #F3F3F3; */
+    background-color: #4C3A51;
     border: 1px solid black;
     border-radius: 5px;
     height: 600px;
@@ -25,7 +27,8 @@ body {
 #display
 {
     display: flex;
-    background-color: white;
+    /* background-color: white; */
+    background-color: #774360;
     border: solid 3px black;
     border-radius: 3px;
     grid-column: span 4;
@@ -48,16 +51,33 @@ body {
 
 button
 {
+    background-color: #774360;
+    border: 1px solid black;
+    border-radius: 5px;
+
     font-size: 28px;
     font-weight: bold;
 }
 
+button:disabled {
+    background-color: #4C3A51;
+    color: darkgray;
+}
+
+button:hover:not(:disabled) {
+    background-color: #B25068;
+}
+
+/* button:disabled:hover {
+    background-color: inherit;
+} */
+
 .clearbutton
 {
-    color: darkred;
+    color: red;
 }
 
 .operator
 {
-    color: darkgreen;
+    color: green;
 }
