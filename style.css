@@ -1,5 +1,6 @@
 *
 {
+    color: #000;
     font-family: monospace;
 }
 
@@ -7,14 +8,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 900px;
+    background-color: #dfddd7;
+    /* height: 900px; */
 }
 
 #calculator
 {
-    background-color: #F3F3F3;
+    /* background-color: #F3F3F3; */
     border: 1px solid black;
     border-radius: 5px;
+    background-color: #202228;
     height: 600px;
     width: 400px;
     padding: 10px;
@@ -24,15 +27,19 @@ body {
 
 #display
 {
+    
     display: flex;
-    background-color: white;
-    border: solid 3px black;
+    /* background-color: white; */
+    /* background-color: #000; */
+    /* border: solid 3px black; */
     border-radius: 3px;
     grid-column: span 4;
+    background-color: #3f424f;
 }
 
 #maindisplay
 {
+    color: #fff;
     font-size: 40px;
     margin: auto 0;
     margin-left: auto;
@@ -48,16 +55,39 @@ body {
 
 button
 {
+    background-color: #fff;
+    border: 0px solid black;
+    border-radius: 5px;
+
     font-size: 28px;
     font-weight: bold;
 }
 
+button:disabled {
+    background-color: unset;
+    color: darkgray;
+}
+
+button:hover:not(:disabled) {
+    background-color: #373A44;
+    color: #fff;
+}
+
+/* button:disabled:hover {
+    background-color: inherit;
+} */
+
 .clearbutton
 {
-    color: darkred;
+    color: #A13333;
 }
 
 .operator
 {
-    color: darkgreen;
+    background-color: orangered;
+    /* color: #2da76e; */
+}
+
+.memorybutton, .clearbutton {
+    background-color: mediumaquamarine;
 }
